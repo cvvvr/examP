@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.exam.entity.ApiResult;
 import com.exam.entity.Student;
+import com.exam.entity.StudentExam;
 import com.exam.serviceimpl.StudentServiceImpl;
 import com.exam.util.ApiResultHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,23 @@ public class StudentController {
             return ApiResultHandler.buildApiResult(200,"更新成功",res);
         }
         return ApiResultHandler.buildApiResult(400,"更新失败",res);
+    }
+    @GetMapping("/signUp/{examCode}/{studentId}")
+    public ApiResult signUp(@PathVariable Integer examCode, @PathVariable Integer studentId) {
+        StudentExam studentExam = new StudentExam();
+        studentExam.setExamId(examCode);
+        studentExam.setStudentId(studentId);
+        int res = studentService.isSignUp(studentExam);
+        if (res == 1) {
+            return ApiResultHandler.buildApiResult(400,"报名失败,请勿重复报名",null);
+        }else {
+            int ress = studentService.signUp(studentExam);
+            if(ress == 1){
+                return ApiResultHandler.buildApiResult(200,"报名成功",null);
+            }else {
+                return ApiResultHandler.buildApiResult(400,"报名失败!",null);
+            }
+        }
     }
 
     @PostMapping("/student")

@@ -5,15 +5,20 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.exam.entity.ApiResult;
 import com.exam.entity.ExamManage;
 import com.exam.serviceimpl.ExamManageServiceImpl;
+import com.exam.serviceimpl.StudentServiceImpl;
 import com.exam.util.ApiResultHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class ExamManageController {
 
     @Autowired
     private ExamManageServiceImpl examManageService;
+    @Autowired
+    private StudentServiceImpl studentService;
 
     @GetMapping("/exams")
     public ApiResult findAll(){
@@ -23,14 +28,30 @@ public class ExamManageController {
         return apiResult;
     }
 
-    @GetMapping("/exams/{page}/{size}")
-    public ApiResult findAll(@PathVariable("page") Integer page, @PathVariable("size") Integer size){
+    @GetMapping("/exams/{page}/{size}/{studentId}")
+    public ApiResult findAll(@PathVariable("page") Integer page, @PathVariable("size") Integer size,@PathVariable("studentId") Integer studentId){
         System.out.println("分页查询所有试卷");
         ApiResult apiResult;
         Page<ExamManage> examManage = new Page<>(page,size);
         IPage<ExamManage> all = examManageService.findAll(examManage);
+        if(studentId == 0){
+            apiResult = ApiResultHandler.buildApiResult(200, "请求成功！", all);
+            return apiResult;
+        }
+        List<Integer> signUps = studentService.findSignUpBystudentId(studentId);
+        for(int i = 0;i<all.getRecords().size();i++){
+            if(signUps.indexOf(all.getRecords().get(i).getExamCode()) == -1){
+                all.getRecords().remove(i);
+                i--;
+            }
+        }
+        all.setTotal(all.getRecords().size());
         apiResult = ApiResultHandler.buildApiResult(200, "请求成功！", all);
         return apiResult;
+    }
+    @GetMapping("/findSignUpBystudentId/{studentId}")
+    public List<Integer> findSignUpBystudentId(@PathVariable("studentId") Integer studentId){
+        return studentService.findSignUpBystudentId(studentId);
     }
 
     @GetMapping("/exam/{examCode}")

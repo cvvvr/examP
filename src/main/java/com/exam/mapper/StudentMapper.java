@@ -3,6 +3,7 @@ package com.exam.mapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.exam.entity.Student;
+import com.exam.entity.StudentExam;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -47,4 +48,15 @@ public interface StudentMapper {
     @Insert("insert into student(studentName,grade,major,clazz,institute,tel,email,pwd,cardId,sex,role) values " +
             "(#{studentName},#{grade},#{major},#{clazz},#{institute},#{tel},#{email},#{pwd},#{cardId},#{sex},#{role})")
     int add(Student student);
+
+    @Options(useGeneratedKeys = true,keyProperty = "stuExamId")
+    @Insert("insert into student_exam(examId,studentId) values " +
+            "(#{examId},#{studentId})")
+    int signUp(StudentExam studentExam);
+
+    @Select("select count(1) from student_exam where examId = #{examId} and studentId = #{studentId}")
+    int isSignUp(StudentExam studentExam);
+
+    @Select("select examId from student_exam where studentId = #{studentId}")
+    List<Integer> findSignUpBystudentId(Integer studentId);
 }

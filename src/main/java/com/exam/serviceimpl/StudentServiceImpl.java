@@ -3,6 +3,7 @@ package com.exam.serviceimpl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.exam.entity.Student;
+import com.exam.entity.StudentExam;
 import com.exam.mapper.StudentMapper;
 import com.exam.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,4 +46,20 @@ public class StudentServiceImpl implements StudentService {
     public int add(Student student) {
         return studentMapper.add(student);
     }
+
+    @Override
+    public int signUp(StudentExam studentExam) {
+        return studentMapper.signUp(studentExam);
+    }
+
+    @Override
+    public int isSignUp(StudentExam studentExam) {
+        return studentMapper.isSignUp(studentExam);
+    }
+
+    @Override
+    public List<Integer> findSignUpBystudentId(Integer studentId) {
+        return studentMapper.findSignUpBystudentId(studentId);
+    }
+
 }
