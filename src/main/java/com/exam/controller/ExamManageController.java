@@ -34,7 +34,7 @@ public class ExamManageController {
         ApiResult apiResult;
         Page<ExamManage> examManage = new Page<>(page,size);
         IPage<ExamManage> all = examManageService.findAll(examManage);
-        if(studentId == 0){
+        if(studentId == 1){
             apiResult = ApiResultHandler.buildApiResult(200, "请求成功！", all);
             return apiResult;
         }
