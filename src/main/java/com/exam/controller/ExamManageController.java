@@ -38,15 +38,17 @@ public class ExamManageController {
             apiResult = ApiResultHandler.buildApiResult(200, "请求成功！", all);
             return apiResult;
         }
+        Page<ExamManage> newExamManage = new Page<>(page,99);
+        IPage<ExamManage> newAll = examManageService.findAll(newExamManage);
         List<Integer> signUps = studentService.findSignUpBystudentId(studentId);
-        for(int i = 0;i<all.getRecords().size();i++){
-            if(signUps.indexOf(all.getRecords().get(i).getExamCode()) == -1){
-                all.getRecords().remove(i);
+        for(int i = 0;i<newAll.getRecords().size();i++){
+            if(signUps.indexOf(newAll.getRecords().get(i).getExamCode()) == -1){
+                newAll.getRecords().remove(i);
                 i--;
             }
         }
-        all.setTotal(all.getRecords().size());
-        apiResult = ApiResultHandler.buildApiResult(200, "请求成功！", all);
+        newAll.setTotal(newAll.getRecords().size());
+        apiResult = ApiResultHandler.buildApiResult(200, "请求成功！", newAll);
         return apiResult;
     }
     @GetMapping("/findSignUpBystudentId/{studentId}")

@@ -26,7 +26,7 @@ public interface StudentMapper {
     int deleteById(Integer studentId);
 
     /**
-     *更新所有学生信息
+     *更新学生信息
      * @param student 传递一个对象
      * @return 受影响的记录条数
      */

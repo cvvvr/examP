@@ -22,7 +22,7 @@ public class LoginController {
     @PostMapping("/login")
     public ApiResult login(@RequestBody Login login) {
 
-        Integer username = login.getUsername();
+        String username = login.getUsername();
         String password = login.getPassword();
         Admin adminRes = loginService.adminLogin(username, password);
         if (adminRes != null) {

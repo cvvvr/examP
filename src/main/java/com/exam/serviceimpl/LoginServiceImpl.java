@@ -17,17 +17,17 @@ public class LoginServiceImpl implements LoginService {
     private LoginMapper loginMapper;
 
     @Override
-    public Admin adminLogin(Integer username, String password) {
+    public Admin adminLogin(String username, String password) {
         return loginMapper.adminLogin(username,password);
     }
 
     @Override
-    public Teacher teacherLogin(Integer username, String password) {
+    public Teacher teacherLogin(String username, String password) {
         return loginMapper.teacherLogin(username,password);
     }
 
     @Override
-    public Student studentLogin(Integer username, String password) {
+    public Student studentLogin(String username, String password) {
         return loginMapper.studentLogin(username,password);
     }
 }
